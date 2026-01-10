@@ -4,6 +4,14 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+  public_dir: '%kernel.project_dir%/public'
+  upload_dir_profile: '%public_dir%/uploads/profiles'   # <— chemin DISQUE
+  upload_url_profile: 'uploads/profiles'                 # <— chemin WEB
+  upload_dir_logo: '%public_dir%/uploads/logos'         # <— chemin DISQUE
+  upload_url_logo: 'uploads/logos'                       # <— chemin WEB
+  upload_dir_services: '%public_dir%/uploads/services'
+  upload_url_services: 'uploads/services'
+
 
 services:
     # default configuration for services in *this* file

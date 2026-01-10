@@ -1,0 +1,137 @@
+{# 
+
+	<div class="title" aria-label="Azur 66 Plomberie">
+		<div
+			class="content">
+			<!-- Avatar -->
+			<div class="hero-photo-wrap">
+				{% if admin.srcProfil %}
+					<picture>
+						<source type="image/webp" srcset="{{ asset('uploads/profiles/' ~ admin.srcProfil) }}">
+						<img class="hero-photo" src="{{ asset('uploads/profiles/' ~ admin.srcProfil|replace({'.webp': '.jpg'})) }}" alt="photo de profil" width="128" height="128" loading="eager" decoding="async" onerror="this.onerror=null;this.src='{{ asset('placeholder-avatar.png') }}';">
+					</picture>
+				{% else %}
+					<img class="hero-photo" src="{{ asset('placeholder-avatar.png') }}" alt="photo de profil" width="128" height="128">
+				{% endif %}
+			</div>
+
+			<!-- Texte -->
+			<div class="text-block min-w-0">
+				<div class="">
+					<h1>Azur 66 Plomberie</h1>
+				</div>
+				<div class="sub text-truncate">{{ admin.sousTitre }}</div>
+				<div class="sub">{{ admin.adresse }}</div>
+				<div class="sub">{{ admin.ville }}</div>
+			</div>
+
+			<div class="corner-logo">
+				<img src="{{ asset('logo/logo_plombier.webp') }}" alt="logo">
+			</div>
+		</div>
+
+
+		<div class="contact-layer">
+			<div class="contact-bar d-flex gap-4 w-100">
+				{% if admin.telephone %}
+					{% set tel_href = 'tel:' ~ admin.telephone|replace({' ': '', '.': '', '-': ''}) %}
+					<div class="contact-item flex-grow-1">
+						<a href="{{ tel_href }}" class="btn btn-swap d-flex justify-content-center align-items-center" aria-label="Appeler {{ admin.telephone }}">
+							<span class="btn-text btn-text--default">{{ admin.telephone }}</span>
+							<span class="btn-text btn-text--hover">Appeler maintenant</span>
+						</a>
+					</div>
+				{% endif %}
+
+				{% if admin.email %}
+					{% set subject = 'Demande de contact – Azur 66 Plomberie' %}
+					{% set body    = "Bonjour,\n\nJe vous contacte via le site." %}
+					{% set parts = admin.email|split('@') %}
+					{% set user = parts[0] %}
+					{% set domain_full = parts[1] %}
+					{% set domain_parts = domain_full|split('.') %}
+					{% set domain = domain_parts|slice(0, -1)|join('.') %}
+					{% set tld = domain_parts|last %}
+					<div class="contact-item flex-grow-1">
+						<a href="#" class="btn btn-swap d-flex justify-content-center align-items-center js-mail" data-user="{{ user }}" data-domain="{{ domain }}" data-tld="{{ tld }}" data-subject="{{ subject|url_encode }}" data-body="{{ body|url_encode }}" rel="nofollow" aria-label="Envoyer un e-mail à {{ admin.email }}">
+							<span class="btn-text btn-text--default">{{ user }}@{{ domain }}.{{ tld }}</span>
+							<span class="btn-text btn-text--hover">Envoyer un e-mail</span>
+						</a>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+
+
+	</div>
+</div> #}
+
+
+
+
+<div class="row align-items-center g-3">
+  <div class="col-auto">
+    <picture>
+      <source type="image/webp" srcset="{{ asset('uploads/profiles/' ~ admin.srcProfil) }}">
+      <img
+        class="hero-photo rounded-circle object-fit-cover"
+        src="{{ asset('uploads/profiles/' ~ admin.srcProfil) }}"
+        alt="Photo de profil"
+        width="96" height="96"
+        loading="eager" decoding="async"
+        onerror="this.onerror=null;this.src='{{ asset('placeholder-avatar.png') }}';"
+      >
+    </picture>
+  </div>
+
+  <div class="col text-md-center">
+    <h1 class="h3 mb-1">Azur 66 Plomberie</h1>
+    <div class="text-muted">{{ admin.sousTitre }}</div>
+    <div>{{ admin.adresse }}</div>
+    <div>{{ admin.ville }}</div>
+  </div>
+
+  <div class="col-auto ms-auto d-none d-sm-block">
+    <img
+      src="{{ asset('logo/logo_plombier.webp') }}"
+      alt="Logo Azur 66 Plomberie"
+      width="128" height="128"
+      loading="eager" decoding="async"
+      class="img-fluid"
+    >
+  </div>
+</div>
+
+<div class="m-4 text-center">
+<p class="card-title"><strong>Lundi au Samedi    de 7H00 à 20H00 <i>Intervention Perpignan et ses alentours</i></strong></p>
+</div>
+
+<div class="row g-2">
+  <div class="col-12 col-md-6 d-grid btn btn-info">
+    {% set tel_href = 'tel:' ~ admin.telephone|replace({' ': '', '.': '', '-': ''}) %}
+    <a href="{{ tel_href }}" class="btn btn-swap d-flex justify-content-center align-items-center text-white" aria-label="Appeler {{ admin.telephone }}">
+							<span class="btn-text btn-text--default">{{ admin.telephone }}</span>
+							<span class="btn-text btn-text--hover">Appeler maintenant</span>
+						</a>
+  </div>
+
+  <div class="col-12 col-md-6 d-grid btn btn-info">
+    {% set subject = 'Demande de contact – Azur 66 Plomberie' %}
+    {% set body    = "Bonjour,\n\nJe vous contacte via le site." %}
+    {% set parts = admin.email|split('@') %}
+    {% set user = parts[0] %}
+    {% set domain_full = parts[1] %}
+    {% set domain_parts = domain_full|split('.') %}
+    {% set domain = domain_parts|slice(0, -1)|join('.') %}
+    {% set tld = domain_parts|last %}
+    <a href="#" class="btn btn-swap d-flex justify-content-center align-items-center js-mail text-white" data-user="{{ user }}" data-domain="{{ domain }}" data-tld="{{ tld }}" data-subject="{{ subject|url_encode }}" data-body="{{ body|url_encode }}" rel="nofollow" aria-label="Envoyer un e-mail à {{ admin.email }}">
+              <span class="btn-text btn-text--default">{{ user }}@{{ domain }}.{{ tld }}</span>
+              <span class="btn-text btn-text--hover">Envoyer un e-mail</span>
+            </a>
+    </div>
+
+
+
+
+</div>
+

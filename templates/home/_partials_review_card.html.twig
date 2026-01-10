@@ -1,0 +1,108 @@
+{# templates/partials/_reviews_card.html.twig #}
+<aside class="card h-100 shadow-sm reviews-card">
+	<div class="card-body">
+
+
+		<h4 class="card-title supInfo ">{{ admin.suppInfo }} <span class="icon"> <img class ='icon' src="{{ asset('build/svg/stylo.svg') }}" width="24" height="24" alt="Stylo" decoding="async"></span></h4>
+
+		<h5 class="card-title">{{ admin.slogan }}</h5>
+
+	
+		<div class="d-flex align-items-center justify-content-between mb-2 mt-3">
+			<h2 class="h5 mb-0">Avis clients</h2>
+
+			{# Badge dynamique avec fallback si stats non fournies #}
+			{% set avg = stats.average|default(5) %}
+			{% set cnt = stats.count|default(reviews|length) %}
+			<span class="badge bg-success">
+				★
+				{{ avg|number_format(1, ',', ' ') }}
+				<span class="text-opacity-75">({{ cnt }})</span>
+			</span>
+		</div>
+
+		{% if reviews is empty %}
+			<p class="text-muted mb-0">Aucun avis pour le moment.</p>
+		{% else %}
+			<div id="reviewsCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="6500">
+				<div class="carousel-indicators position-static mb-2">
+					{% for r in reviews %}
+						<button type="button" data-bs-target="#reviewsCarousel" data-bs-slide-to="{{ loop.index0 }}" class="{{ loop.first ? 'active' : '' }}" aria-label="Avis {{ loop.index }}" {{ loop.first ? 'aria-current="true"' : '' }}></button>
+					{% endfor %}
+				</div>
+
+				<div class="carousel-inner">
+					{% for r in reviews %}
+						<div class="carousel-item {{ loop.first ? 'active' : '' }}">
+							<figure class="mb-0">
+								<blockquote class="blockquote mb-2 small">
+									“{{ r.text }}”
+								</blockquote>
+
+								<figcaption class="blockquote-footer mb-0">
+									<div class="d-flex flex-wrap align-items-center gap-2">
+										<strong class="me-1">{{ r.author|default('Client') }}</strong>
+
+										{# Étoiles #}
+										{% set full = (r.rating|default(5))|round(0, 'floor') %}
+										<span class="text-warning" aria-label="{{ full }} sur 5">
+											{% for i in 1..5 %}
+												{{ i <= full ? '★' : '☆' }}
+											{% endfor %}
+										</span>
+
+										{# Source #}
+										{% set src = r.source|default('autre') %}
+										<span class="text-muted">—
+											{{ src == 'google' ? 'Google'
+                        : (src == 'pagesjaunes' ? 'Pages Jaunes'
+                        : (src == 'meilleur-artisan' ? 'Meilleur-Artisan.com'
+                        : src|capitalize)) }}
+										</span>
+
+										{# Label (optionnel) #}
+										{% if r.label is defined and r.label %}
+											<span class="badge bg-info-subtle text-info-emphasis">{{ r.label }}</span>
+										{% endif %}
+
+										{# Age (optionnel) #}
+										{% if r.age is defined and r.age %}
+											<span class="text-muted">{{ r.age }}</span>
+										{% endif %}
+
+										{# Visited (optionnel) #}
+										{% if r.visited is defined and r.visited %}
+											<span class="text-muted">·
+												{{ r.visited }}</span>
+										{% endif %}
+
+										{# Lien source (optionnel) #}
+										{% if r.url is defined and r.url %}
+											{% set link_label = src == 'google' ? 'Voir sur Google' :
+                                          (src == 'pagesjaunes' ? 'Voir sur Pages Jaunes' :
+                                          (src == 'meilleur-artisan' ? 'Voir sur Meilleur-Artisan.com' : 'Voir la source')) %}
+											<a
+												href="{{ r.url }}" target="_blank" rel="noopener" class="link-secondary ms-auto small" style="margin-right: 2.5rem;">
+												{# ~ largeur icône control #}
+												{{ link_label }}
+											</a>
+
+										{% endif %}
+									</div>
+								</figcaption>
+							</figure>
+						</div>
+					{% endfor %}
+				</div>
+
+				<button class="carousel-control-prev" type="button" data-bs-target="#reviewsCarousel" data-bs-slide="prev" aria-label="Avis précédent">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				</button>
+				<button class="carousel-control-next" type="button" data-bs-target="#reviewsCarousel" data-bs-slide="next" aria-label="Avis suivant">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+				</button>
+			</div>
+		{% endif %}
+
+	</div>
+</aside>

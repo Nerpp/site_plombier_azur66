@@ -1,0 +1,211 @@
+@use "bootstrap/scss/bootstrap";
+
+
+:root { --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+body { font-family: var(--font-ui); font-optical-sizing: auto; background: white;}
+h1, h2, h3 { font-weight: 600; }
+
+/* ===== Base ===== */
+body {
+  
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+font-optical-sizing: auto; /* actif si la fonte a l’axe opsz */
+font-weight: 400;
+font-style: normal;
+}
+
+.mail-visible::before { content: attr(data-user) "@" attr(data-domain) "." attr(data-tld); }
+.mail-visible { cursor: pointer; }
+
+.navbar .brand-logo { height: 42px; width: auto; object-fit: contain; }
+
+
+/* Avatar */
+.hero-photo-wrap {
+  grid-area: avatar;
+  width: clamp(72px, 20vw, 112px);
+  height: clamp(72px, 20vw, 112px);
+  border-radius: 50%;
+  overflow: hidden;
+  background: #0a1326;
+}
+.hero-photo { width: 100%; height: 100%; display: block; object-fit: cover; border-radius: 50%; }
+
+
+/* Logo (visible sauf en mobile) */
+.corner-logo {
+  grid-area: logo;
+  width: clamp(56px, 8vw, 96px);
+  height: auto;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 14px rgba(0,0,0,.35));
+}
+.corner-logo img { display:block; width:100%; height:auto; border-radius: 8px; }
+/* >>> masque le logo en mobile */
+@media (max-width: 575.98px) { .corner-logo { display: none; } }
+
+.bg-blue-azur { 
+  //  color:#0b3350;
+   
+  background:linear-gradient(to top,rgba(0,0,0,.05),#50A3D2,#50A3D2)
+ }
+
+/* Trait lumineux bas */
+
+
+/* ===== Contact bar ===== */
+
+// .contact-bar {
+//   display: flex;
+//   align-items: stretch;
+//   gap: 1.25rem;
+
+//   /* Offset responsive via variable (desktop par défaut) */
+//   --contact-offset: 6rem;
+//   margin-block-start: var(--contact-offset) !important;
+
+//   /* Toujours au-dessus des overlays (swatch…) */
+//   position: relative;
+//   z-index: 2;
+//   isolation: isolate;       /* évite les stacking context parasites */
+//   overflow: visible;        /* ne pas rogner les ombres/hover */
+// }
+
+// .contact-bar > .flex-grow-1 { flex: 1 1 0%; min-width: 0; }
+// .contact-bar > a            { flex: 1 1 0%; min-width: 0; }
+
+// .contact-bar .contact-item { /* utile pour les breakpoints intermédiaires */
+//   flex: 1 1 auto;
+//   min-width: 0;
+// }
+
+// .contact-bar .btn {
+//   width: 100%;
+//   min-height: 46px;
+//   padding-inline: 16px;
+//   display: inline-flex;
+//   align-items: center;
+//   justify-content: center;
+//   border-radius: 14px;
+//   transition: transform .18s ease, box-shadow .18s ease;
+//   font-weight: 600;
+//   line-height: 1.2;
+//   word-break: break-word;
+//   color: #0b3350;
+//   background: #e9f6ff;
+//   border: 0;
+//   white-space: nowrap;  /* texte sur une seule ligne */
+// }
+
+// @media (hover: hover) and (pointer: fine) {
+//   .contact-bar .btn:hover,
+//   .contact-bar .btn:focus-visible {
+//     transform: scale(1.03);
+//     box-shadow: 0 10px 24px rgba(0,0,0,0.10);
+//   }
+// }
+// .contact-bar .btn:active { transform: scale(0.98); }
+
+// /* ===== Mobile (<=576px): empiler + remonter l'offset pour garder l'email visible */
+// @media (max-width: 576px) {
+//   .contact-bar {
+//     flex-direction: column;
+//     gap: .75rem;
+//     margin-block-start: clamp(0px, 2.0vh, 16px) !important; /* remonte par rapport au 6rem */
+//     z-index: 3; /* passe devant la barre swatch agressive */
+//   }
+
+//   .contact-bar .btn {
+//     min-height: 42px;
+//     font-size: clamp(13px, 3.4vw, 15px);
+//     padding-inline: 12px;
+//   }
+// }
+
+// /* ===== Viewports intermédiaires (577px–992px): autoriser le wrap propre
+//         évite la disparition quand 2 boutons ne rentrent plus côte à côte */
+// @media (min-width: 577px) and (max-width: 992px) {
+//   .contact-bar {
+//     flex-wrap: wrap;              /* passe à la ligne si besoin */
+//     row-gap: .75rem;
+//     margin-block-start: clamp(4px, 1.2vh, 12px) !important; /* remonte légèrement */
+//   }
+//   .contact-bar .contact-item {
+//     flex: 1 1 320px;              /* largeur cible par bouton */
+//     min-width: 260px;             /* ne pas descendre trop bas */
+//   }
+//   .contact-bar .btn {
+//     max-width: 100%;
+//   }
+// }
+
+/* ===== Option safe-area (iPhone encoche) — active si besoin
+@supports (height: 100dvh) {
+  .contact-bar {
+    --contact-offset: calc(env(safe-area-inset-top, 0px) + var(--contact-offset));
+  }
+}
+*/
+
+/* Swap texte */
+.btn-swap { position: relative; overflow: hidden; }
+.btn-swap .btn-text { display: block; transition: transform .25s ease, opacity .25s ease; white-space: nowrap; color: inherit; }
+.btn-swap .btn-text--hover {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  transform: translateY(110%); opacity: 0;
+}
+@media (hover: hover) and (pointer: fine) {
+  .btn-swap:hover .btn-text--hover, .btn-swap:focus-visible .btn-text--hover { transform: translateY(0%); opacity: 1; }
+  .btn-swap:hover .btn-text--default, .btn-swap:focus-visible .btn-text--default { transform: translateY(-110%); opacity: 0; }
+}
+
+/* ===== Divers (inchangé) ===== */
+.row-compact { --bs-gutter-x: 1rem; --bs-gutter-y: 1rem; }
+@media (min-width: 992px) { .services-card { margin-left: 0; } }
+.services-card .card-body ul li { margin-bottom: .4rem; }
+.services-card .card-body ul li:last-child { margin-bottom: 0; }
+
+// .mosaic-24 {
+//   --gap-x: 14px; --gap-y: 14px; --tile-h: 200px;
+//   display: grid; grid-template-columns: repeat(24, minmax(0, 1fr));
+//   gap: var(--gap-y) var(--gap-x); width: 100%; max-width: 100%;
+// }
+// .w3{grid-column:span 3}.w4{grid-column:span 4}.w5{grid-column:span 5}.w6{grid-column:span 6}
+// .w8{grid-column:span 8}.w10{grid-column:span 10}
+
+// .tile{position:relative;overflow:hidden;border-radius:14px;background:#f6f8fb;transition:transform .2s ease,box-shadow .2s ease,opacity .2s ease,filter .2s ease}
+// .tile__fig{margin:0;height:var(--tile-h);position:relative}
+// .tile__fig img{width:100%;height:100%;display:block;object-fit:cover;object-position:center}
+// .tile__cap{position:absolute;left:0;right:0;bottom:0;padding:12px 14px;color:#fff;background:linear-gradient(to top,rgba(0,0,0,.55),rgba(0,0,0,0))}
+// .tile__title{display:block;font-weight:700;font-size:1.02rem;line-height:1.1}
+// .tile__sub{display:block;font-size:.88rem;opacity:.95}
+
+@media (hover: hover) and (pointer: fine) {
+  .mosaic-24:hover .tile { opacity: .45; filter: grayscale(.15) blur(.2px); }
+  .mosaic-24 .tile:hover { opacity: 1; filter: none; transform: scale(1.03); box-shadow: 0 10px 24px rgba(0,0,0,.16); z-index: 4; }
+}
+
+.mosaic-24.two-rows {
+  --vh-offset: 0px;
+  height: calc(100svh - var(--vh-offset));
+  grid-template-rows: repeat(2, 1fr);
+  row-gap: var(--gap-y);
+  align-content: stretch;
+}
+@supports (height: 100dvh) { .mosaic-24.two-rows { height: calc(100dvh - var(--vh-offset)); } }
+.mosaic-24.two-rows .tile { height: auto; }
+.mosaic-24.two-rows .tile__fig { height: 100%; }
+
+@media (max-width: 1199.98px) {
+  .mosaic-24 { grid-template-columns: repeat(12, minmax(0,1fr)); }
+  .w10{grid-column:span 12}.w8{grid-column:span 8}.w6{grid-column:span 6}.w5,.w4,.w3{grid-column:span 6}
+}
+@media (max-width: 575.98px) {
+  .mosaic-24 { grid-template-columns: repeat(2, 1fr); --gap-y: 10px; --tile-h: 180px; }
+  .w10,.w8,.w6,.w5,.w4,.w3{grid-column:span 1}
+}
+
+.row-stretch > [class*="col-"] { display: flex; }
+.row-stretch > [class*="col-"] > * { width: 100%; }
+
+.icon { color: #0d6efd; }

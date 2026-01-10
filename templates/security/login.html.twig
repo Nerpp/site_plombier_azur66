@@ -1,0 +1,96 @@
+{# templates/security/login.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+<div class="min-vh-100 d-flex align-items-center bg-light py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+
+        {% if app.user %}
+          <div class="alert alert-info d-flex justify-content-between align-items-center" role="alert">
+            <span>Déjà connecté(e) en tant que <strong>{{ app.user.userIdentifier }}</strong>.</span>
+            <a class="btn btn-sm btn-outline-dark" href="{{ path('app_logout') }}">Déconnexion</a>
+          </div>
+        {% endif %}
+
+        {% if error %}
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ error.messageKey|trans(error.messageData, 'security') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+          </div>
+        {% endif %}
+
+        <div class="card shadow-sm border-0">
+          <div class="card-body p-4 p-md-5">
+            <div class="text-center mb-4">
+              <div class="rounded-circle d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 p-3 mb-2">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" class="text-primary">
+                  <path d="M12 12a5 5 0 100-10 5 5 0 000 10zm-7 9a7 7 0 0114 0v1H5v-1z"/>
+                </svg>
+              </div>
+              <h1 class="h4 mb-1">Connexion</h1>
+              <p class="text-muted mb-0">Accédez à votre espace sécurisé.</p>
+            </div>
+
+            <form method="post" novalidate>
+              <div class="mb-3">
+                <label for="username" class="form-label">Adresse e-mail</label>
+                <input
+                  type="email"
+                  value="{{ last_username }}"
+                  name="_username"
+                  id="username"
+                  class="form-control"
+                  autocomplete="email"
+                  required
+                  autofocus
+                  placeholder="nom@exemple.com"
+                >
+              </div>
+
+              <div class="mb-2">
+                <label for="password" class="form-label">Mot de passe</label>
+                <input
+                  type="password"
+                  name="_password"
+                  id="password"
+                  class="form-control"
+                  autocomplete="current-password"
+                  required
+                  placeholder="Votre mot de passe"
+                >
+              </div>
+
+              <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+              {# Optionnel : souvenez-vous de moi (activez-le dans security.yaml) #}
+              {#
+              <div class="form-check my-2">
+                <input class="form-check-input" type="checkbox" name="_remember_me" id="_remember_me">
+                <label class="form-check-label" for="_remember_me">Se souvenir de moi</label>
+              </div>
+              #}
+
+              <button class="btn btn-primary w-100 mt-3" type="submit">Se connecter</button>
+
+              <div class="d-flex justify-content-between mt-3">
+                <a href="{{ path('app_forgot_password_request') }}" class="text-decoration-none">
+                  Mot de passe oublié ?
+                </a>
+                {# Ajoutez votre route d’inscription si besoin :
+                <a href="{{ path('app_register') }}" class="text-decoration-none">Créer un compte</a>
+                #}
+              </div>
+            </form>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
