@@ -75,7 +75,7 @@
 
     {# ===== JSON-LD LocalBusiness (Plumber) ===== #}
     {% set phone_e164 = '+33638776835' %}
-    {% set business_email = (admin is defined and admin.email) ? admin.email : null %}
+    {% set business_email = (app.user is defined and app.user and app.user.email is defined) ? app.user.email : null %}
     {% set same_as = (admin is defined and admin.sameAs is defined) ? admin.sameAs : [] %}
 
     {% block jsonld %}

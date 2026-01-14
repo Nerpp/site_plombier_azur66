@@ -170,6 +170,18 @@ body {
 
 .icon { color: #0d6efd; }
 
+/* Cartes top (presentation + avis) pour stabiliser la hauteur */
+.presentation-card,
+.reviews-card {
+  min-height: 220px;
+}
+@media (min-width: 992px) {
+  .presentation-card,
+  .reviews-card {
+    min-height: 260px;
+  }
+}
+
 /* Empêche les comportements de zoom sur la zone (sans casser le swipe du carousel) */
 .no-zoom-zone { touch-action: pan-x pan-y; }
 .no-zoom-zone img {

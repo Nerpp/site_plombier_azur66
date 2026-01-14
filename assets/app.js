@@ -12,8 +12,8 @@ import './js/protection_mail';
 
 // ✅ corrige le chemin : tiret et pas underscore
 import './js/card-service';
+import './js/review-modal';
 
 // empeche les images de zoomer sur mobile
 // import './js/prevent-zoom-mobile';
-
 

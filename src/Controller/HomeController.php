@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\AdminCommentaireRepository;
 use App\Repository\AdminRepository;
 use App\Service\ManualReviewsService;
 use Symfony\Contracts\Cache\ItemInterface;
@@ -13,7 +14,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 final class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(AdminRepository $repo,ManualReviewsService $svc,TagAwareCacheInterface $cache): Response
+    public function index(
+        AdminRepository $repo,
+        ManualReviewsService $svc,
+        AdminCommentaireRepository $commentRepo,
+        TagAwareCacheInterface $cache
+    ): Response
     {
 
         $admin = $repo->findSingletonWithServicesAndPhotos();
@@ -51,14 +57,41 @@ final class HomeController extends AbstractController
             return $repo->findOneBy(['code' => 'singleton']);
         });
 
-        $stats = $cache->get('home.stats', function (ItemInterface $item) use ($svc) {
+        $stats = $cache->get('home.stats', function (ItemInterface $item) use ($svc, $commentRepo) {
             $item->tag(['home', 'home.stats']);
-            return $svc->getStats();
+            $comments = $commentRepo->findAll();
+            if (!$comments) {
+                return $svc->getStats();
+            }
+
+            $count = count($comments);
+            $avg = $count ? array_sum(array_map(static fn($c) => (int) $c->getRating(), $comments)) / $count : 0;
+            return ['average' => $avg, 'count' => $count];
         });
 
-        $reviews = $cache->get('home.reviews.9', function (ItemInterface $item) use ($svc) {
+        $reviews = $cache->get('home.reviews.9', function (ItemInterface $item) use ($svc, $commentRepo) {
             $item->tag(['home', 'home.reviews']);
-            return $svc->getRandomized(9);
+            $comments = $commentRepo->findAll();
+            if (!$comments) {
+                return $svc->getRandomized(9);
+            }
+
+            $list = [];
+            foreach ($comments as $comment) {
+                $list[] = [
+                    'author'  => $comment->getAuthor() ?? 'Client',
+                    'source'  => $comment->getSource()?->getLabel() ?? 'autre',
+                    'rating'  => $comment->getRating() ?? 5,
+                    'age'     => $comment->getDate() ?? null,
+                    'text'    => $comment->getText() ?? '',
+                    'label'   => null,
+                    'visited' => null,
+                    'url'     => null,
+                ];
+            }
+
+            shuffle($list);
+            return array_slice($list, 0, 9);
         });
 
         return $this->render('home/index.html.twig', [

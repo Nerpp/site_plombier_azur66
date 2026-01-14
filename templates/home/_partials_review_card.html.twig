@@ -35,8 +35,11 @@
 					{% for r in reviews %}
 						<div class="carousel-item {{ loop.first ? 'active' : '' }}">
 							<figure class="mb-0">
+								{% set text = r.text|default('') %}
+								{% set is_long = text|length > 180 %}
+								{% set has_text = text|length > 0 %}
 								<blockquote class="blockquote mb-2 small">
-									“{{ r.text }}”
+									“{{ is_long ? text|slice(0, 180) ~ '…' : text }}”
 								</blockquote>
 
 								<figcaption class="blockquote-footer mb-0">
@@ -76,6 +79,22 @@
 												{{ r.visited }}</span>
 										{% endif %}
 
+										{% if has_text %}
+											<button
+												type="button"
+												class="btn btn-link p-0 small js-review-modal"
+												data-text="{{ text|e('html_attr') }}"
+												data-author="{{ r.author|default('Client')|e('html_attr') }}"
+												data-source="{{ src|default('autre')|e('html_attr') }}"
+												data-rating="{{ full }}"
+												data-age="{{ r.age|default('')|e('html_attr') }}"
+												data-visited="{{ r.visited|default('')|e('html_attr') }}"
+												data-label="{{ r.label|default('')|e('html_attr') }}"
+											>
+												Lire le commentaire
+											</button>
+										{% endif %}
+
 										{# Lien source (optionnel) #}
 										{% if r.url is defined and r.url %}
 											{% set link_label = src == 'google' ? 'Voir sur Google' :
@@ -106,3 +125,26 @@
 
 	</div>
 </aside>
+
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<p class="modal-title h5 mb-0">Commentaire</p>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+			</div>
+			<div class="modal-body">
+				<div class="d-flex align-items-center gap-2 mb-2">
+					<strong class="js-review-author">Client</strong>
+					<span class="text-warning js-review-rating" aria-hidden="true"></span>
+					<span class="text-muted js-review-source"></span>
+				</div>
+				<div class="text-muted small mb-2 js-review-meta"></div>
+				<p class="mb-0 js-review-text"></p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+			</div>
+		</div>
+	</div>
+</div>

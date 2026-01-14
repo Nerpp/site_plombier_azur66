@@ -1,16 +1,18 @@
-<div class="row align-items-center g-3">
+<div class="row align-items-center g-3 presentation-card">
   <div class="col-auto">
-    <picture>
-      <source type="image/webp" srcset="{{ asset('uploads/profiles/' ~ admin.srcProfil) }}">
-      <img
-        class="hero-photo rounded-circle object-fit-cover"
-        src="{{ asset('uploads/profiles/' ~ admin.srcProfil) }}"
-        alt="Photo de profil"
-        width="96" height="96"
-        loading="eager" decoding="async" fetchpriority="high"
-        onerror="this.onerror=null;this.src='{{ asset('placeholder-avatar.png') }}';"
-      >
-    </picture>
+    {% if admin.srcProfil %}
+      <picture>
+        <source type="image/webp" srcset="{{ asset('uploads/profiles/' ~ admin.srcProfil) }}">
+        <img
+          class="hero-photo rounded-circle object-fit-cover"
+          src="{{ asset('uploads/profiles/' ~ admin.srcProfil) }}"
+          alt="Photo de profil"
+          width="96" height="96"
+          loading="eager" decoding="async" fetchpriority="high"
+          onerror="this.onerror=null;this.src='{{ asset('placeholder-avatar.png') }}';"
+        >
+      </picture>
+    {% endif %}
   </div>
 
   <div class="col text-md-center">
@@ -21,13 +23,15 @@
   </div>
 
   <div class="col-auto ms-auto d-none d-sm-block">
-    <img
-      src="{{ asset('logo/logo_plombier.webp') }}"
-      alt="Logo Azur 66 Plomberie"
-      width="128" height="128"
-      loading="eager" decoding="async" fetchpriority="high"
-      class="img-fluid"
-    >
+    {% if admin.srcLogo %}
+      <img
+        src="{{ asset('uploads/logos/' ~ admin.srcLogo) }}"
+        alt="Logo Azur 66 Plomberie"
+        width="128" height="128"
+        loading="eager" decoding="async" fetchpriority="high"
+        class="img-fluid"
+      >
+    {% endif %}
   </div>
 </div>
 
