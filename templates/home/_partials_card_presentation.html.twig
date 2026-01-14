@@ -7,14 +7,14 @@
         src="{{ asset('uploads/profiles/' ~ admin.srcProfil) }}"
         alt="Photo de profil"
         width="96" height="96"
-        loading="eager" decoding="async"
+        loading="eager" decoding="async" fetchpriority="high"
         onerror="this.onerror=null;this.src='{{ asset('placeholder-avatar.png') }}';"
       >
     </picture>
   </div>
 
   <div class="col text-md-center">
-    <h1 class="h3 mb-1">Azur 66 Plomberie</h1>
+    <h2 class="h3 mb-1">Azur 66 Plomberie</h2>
     <div class="text-muted">{{ admin.sousTitre }}</div>
     <div>{{ admin.adresse }}</div>
     <div>{{ admin.ville }}</div>
@@ -25,7 +25,7 @@
       src="{{ asset('logo/logo_plombier.webp') }}"
       alt="Logo Azur 66 Plomberie"
       width="128" height="128"
-      loading="eager" decoding="async"
+      loading="eager" decoding="async" fetchpriority="high"
       class="img-fluid"
     >
   </div>
@@ -60,4 +60,3 @@
     </div>
 
 </div>
-

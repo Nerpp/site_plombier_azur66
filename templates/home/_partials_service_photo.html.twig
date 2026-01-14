@@ -52,11 +52,14 @@
                           {# ✅ PAS de <a href="...image"> sinon mobile ouvre l'image brute #}
                           <img
                             src="{{ small }}"
+                            srcset="{{ small }} 640w, {{ full }} 1280w"
+                            sizes="(min-width: 992px) 33vw, (min-width: 768px) 50vw, 100vw"
                             data-full="{{ full }}"
                             class="d-block w-100"
                             alt="{{ desc|default('Photo')|e }}"
                             loading="{{ loop.first ? 'eager' : 'lazy' }}"
                             decoding="async"
+                            {% if loop.first %}fetchpriority="high"{% endif %}
                             style="max-height: 320px; object-fit: contain; background-color: #f8f9fa;"
                           >
 
