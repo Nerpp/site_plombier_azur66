@@ -1,0 +1,4 @@
+<form method="post" action="{{ path('app_admin_commentaire_delete', {'id': admin_commentaire.id}) }}" onsubmit="return confirm('Supprimer cet avis ?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ admin_commentaire.id) }}">
+    <button class="btn btn-outline-danger">Supprimer</button>
+</form>

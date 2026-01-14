@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un avis{% endblock %}
+
+{% block body %}
+    <div class="container py-4">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0">Ajouter un avis</h1>
+            <a class="btn btn-outline-secondary" href="{{ path('app_admin_commentaire_index') }}">Retour</a>
+        </div>
+
+        {{ include('admin_commentaire/_form.html.twig', { button_label: 'Enregistrer' }) }}
+    </div>
+{% endblock %}

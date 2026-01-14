@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Avis clients{% endblock %}
+
+{% block body %}
+    <div class="container py-4">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+            <div>
+                <h1 class="h3 mb-1">Avis clients</h1>
+                <p class="text-muted mb-0">Gerez les commentaires affiches sur le site.</p>
+            </div>
+            <a class="btn btn-primary" href="{{ path('app_admin_commentaire_new') }}">
+                Ajouter un avis
+            </a>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="text-nowrap">Auteur</th>
+                            <th class="text-nowrap">Source</th>
+                            <th class="text-nowrap">Note</th>
+                            <th class="text-nowrap">Date</th>
+                            <th>Commentaire</th>
+                            <th class="text-end text-nowrap">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for admin_commentaire in admin_commentaires %}
+                        <tr>
+                            <td class="fw-semibold">{{ admin_commentaire.author }}</td>
+                            <td>
+                                {% if admin_commentaire.source %}
+                                    <span class="badge bg-info-subtle text-info-emphasis">
+                                        {{ admin_commentaire.source.label|capitalize }}
+                                    </span>
+                                {% else %}
+                                    <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% set rating = admin_commentaire.rating %}
+                                <span class="badge {{ rating >= 4 ? 'bg-success' : (rating == 3 ? 'bg-warning text-dark' : 'bg-secondary') }}">
+                                    {{ rating }}/5
+                                </span>
+                            </td>
+                            <td class="text-nowrap">{{ admin_commentaire.date }}</td>
+                            <td>
+                                {% set text = admin_commentaire.text %}
+                                {{ text|length > 140 ? text|slice(0, 140) ~ '...' : text }}
+                            </td>
+                            <td class="text-end text-nowrap">
+                                <a class="btn btn-sm btn-outline-secondary" href="{{ path('app_admin_commentaire_show', {'id': admin_commentaire.id}) }}">Voir</a>
+                                <a class="btn btn-sm btn-primary" href="{{ path('app_admin_commentaire_edit', {'id': admin_commentaire.id}) }}">Modifier</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-4">Aucun avis trouve.</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

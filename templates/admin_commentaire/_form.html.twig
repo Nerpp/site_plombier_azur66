@@ -1,0 +1,26 @@
+{{ form_start(form) }}
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-12 col-md-6">
+                    {{ form_row(form.author, { label: 'Auteur', attr: { class: 'form-control' } }) }}
+                </div>
+                <div class="col-12 col-md-3">
+                    {{ form_row(form.rating, { label: 'Note (1-5)', attr: { class: 'form-control', min: 1, max: 5 } }) }}
+                </div>
+                <div class="col-12 col-md-3">
+                    {{ form_row(form.date, { label: 'Date/age', attr: { class: 'form-control' } }) }}
+                </div>
+                <div class="col-12 col-md-6">
+                    {{ form_row(form.source, { label: 'Source', attr: { class: 'form-select' } }) }}
+                </div>
+                <div class="col-12">
+                    {{ form_row(form.text, { label: 'Commentaire', attr: { class: 'form-control', rows: 5 } }) }}
+                </div>
+            </div>
+        </div>
+        <div class="card-footer d-flex justify-content-end gap-2">
+            <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+        </div>
+    </div>
+{{ form_end(form) }}
