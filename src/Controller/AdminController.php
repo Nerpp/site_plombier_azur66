@@ -209,6 +209,9 @@ final class AdminController extends AbstractController
                             slugger: $slugger,
                             imageOptimizer: $imageOptimizer,
                             preset: 'service_car_1280x720',
+                            variantPreset: 'service_car_640x360',
+                            variantSuffix: '640x360',
+                            primarySuffix: '1280x720',
                             onSaved: function (string $new) use ($photo) { $photo->setSource($new); },
                         );
                     }
@@ -288,6 +291,9 @@ final class AdminController extends AbstractController
         ImageOptimizerService $imageOptimizer,
         string $preset,
         callable $onSaved,
+        ?string $variantPreset = null,
+        ?string $variantSuffix = null,
+        ?string $primarySuffix = null,
     ): void {
         $allowed = ['image/jpeg', 'image/png', 'image/webp'];
         $mime = $uploadedFile->getMimeType();
@@ -297,6 +303,12 @@ final class AdminController extends AbstractController
 
         if ($currentFilename) {
             @unlink(rtrim($destDir, '/') . '/' . $currentFilename);
+            if ($primarySuffix && $variantSuffix) {
+                $variantFilename = $this->swapImageSuffix($currentFilename, $primarySuffix, $variantSuffix);
+                if ($variantFilename !== $currentFilename) {
+                    @unlink(rtrim($destDir, '/') . '/' . $variantFilename);
+                }
+            }
         }
 
         if (!is_dir($destDir)) {
@@ -309,7 +321,10 @@ final class AdminController extends AbstractController
         $original = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
         $safeName = $slugger->slug($original)->lower();
         $ext = $uploadedFile->guessExtension() ?: 'bin';
-        $newFilename = sprintf('%s-%s.%s', $safeName, uniqid('', true), $ext);
+        $baseName = sprintf('%s-%s', $safeName, uniqid('', true));
+        $newFilename = $primarySuffix
+            ? sprintf('%s-%s.%s', $baseName, $primarySuffix, $ext)
+            : sprintf('%s.%s', $baseName, $ext);
 
         try {
             $uploadedFile->move($destDir, $newFilename);
@@ -325,6 +340,30 @@ final class AdminController extends AbstractController
             throw new \RuntimeException('Erreur lors du traitement de l’image : ' . $e->getMessage());
         }
 
+        if ($variantPreset && $variantSuffix) {
+            $variantFilename = sprintf('%s-%s.%s', $baseName, $variantSuffix, $ext);
+            $variantPath = rtrim($destDir, '/') . '/' . $variantFilename;
+            if (!@copy($fullPath, $variantPath)) {
+                @unlink($fullPath);
+                throw new \RuntimeException('Erreur lors de la duplication de l’image.');
+            }
+            try {
+                $imageOptimizer->optimizePreset($variantPath, $variantPreset);
+            } catch (\Throwable $e) {
+                @unlink($variantPath);
+                throw new \RuntimeException('Erreur lors du traitement de la variante : ' . $e->getMessage());
+            }
+        }
+
         $onSaved($newFilename);
+    }
+
+    private function swapImageSuffix(string $filename, string $from, string $to): string
+    {
+        $needle = '-' . $from . '.';
+        if (!str_contains($filename, $needle)) {
+            return $filename;
+        }
+        return str_replace($needle, '-' . $to . '.', $filename);
     }
 }

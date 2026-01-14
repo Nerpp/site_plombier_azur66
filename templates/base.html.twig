@@ -124,7 +124,13 @@
     {% endfor %}
 
     {# ===== Contenu ===== #}
+    
+  <main id="main-content">
     {% block body %}{% endblock %}
+  </main>
+
+    {# ===== Footer ===== #}
+    {# {% include 'footer/footer.html.twig' %} #}
 
     {# ===== JS ===== #}
     {% block javascripts %}

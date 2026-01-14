@@ -43,7 +43,10 @@ document.addEventListener('click', (e) => {
   items.forEach((it, idx) => {
     const img = it.querySelector('img');
     const caption = it.querySelector('.carousel-caption')?.innerHTML || '';
-    const full = img?.getAttribute('data-full') || img?.src || '';
+    const prefersLarge = window.matchMedia('(min-width: 992px)').matches;
+    const full = prefersLarge
+      ? (img?.getAttribute('data-full') || img?.src || '')
+      : (img?.src || img?.getAttribute('data-full') || '');
 
     // Indicateur
     const btn = document.createElement('button');
@@ -64,7 +67,8 @@ document.addEventListener('click', (e) => {
 
     const big = document.createElement('img');
     big.className = 'w-100 h-100';
-    big.style.objectFit = 'cover';
+    big.style.objectFit = 'contain';
+    big.style.backgroundColor = '#f8f9fa';
     big.loading = (idx === activeIndex) ? 'eager' : 'lazy';
     big.alt = img?.alt || '';
     big.src = full;

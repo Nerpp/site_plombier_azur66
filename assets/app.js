@@ -13,20 +13,7 @@ import './js/protection_mail';
 // ✅ corrige le chemin : tiret et pas underscore
 import './js/card-service';
 
+// empeche les images de zoomer sur mobile
+// import './js/prevent-zoom-mobile';
 
 
-document.addEventListener('DOMContentLoaded', () => {
-  // ✅ Popover défini
-  document.querySelectorAll('[data-bs-toggle="popover"]').forEach(el => new Popover(el));
-
-  if (document.querySelector('#splash')) {
-    initWaterIntro({ root: '#splash', canvas: '#splashCanvas', dpr: 1 });
-  }
-
-  syncSplashHeight({
-    splashSelector: '.water-splash.match-height',
-    cardSelector: '.services-card',
-    breakpointPx: 992,
-    minPx: 280,
-  });
-});

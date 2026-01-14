@@ -1,36 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Azur 66 Plomberie
-{% endblock %}
+{% block title %}Azur 66 Plomberie{% endblock %}
 
 {% block body %}
 
-	<div class="container-fluid">
-		<div class="row row-compact align-items-stretch">
-			<!-- Colonne gauche -->
-			<div class="col-12 col-lg-6 bg-blue-azur">
-				{% include 'home/_partials_card_presentation.html.twig' %}
-			</div>
+  <h1 class="visually-hidden">Azur 66 Plomberie</h1>
 
-			<!-- Colonne droite -->
-			<div class="col-12 col-lg-6">
-				{% include 'home/_partials_review_card.html.twig' with { reviews: reviews, stats: stats } %}
-			</div>
-		</div>
-	</div>
+  <section aria-labelledby="presentation-title">
+    <h2 id="presentation-title" class="visually-hidden">Présentation</h2>
 
-	{% include 'home/_partials_service_photo.html.twig' with {
-    services: services,
-    upload_url_services: upload_url_services|default('uploads/services')
-  } %}
+    <div class="container-fluid">
+      <div class="row row-compact align-items-stretch">
+        <div class="col-12 col-lg-6 bg-blue-azur">
+          {% include 'home/_partials_card_presentation.html.twig' %}
+        </div>
 
+        <div class="col-12 col-lg-6">
+          {% include 'home/_partials_review_card.html.twig' with { reviews: reviews, stats: stats } %}
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <section aria-labelledby="services-title" class="mt-4">
+    <h2 id="services-title" class="visually-hidden">Services</h2>
 
+    {% include 'home/_partials_service_photo.html.twig' with {
+      services: services,
+      upload_url_services: upload_url_services|default('uploads/services')
+    } %}
+  </section>
 {% endblock %}
-
-
-{# <div class="content" id="content">
-        <p>Spécialiste de la plomberie, de l'installation à la réparation, en passant par la rénovation, nous mettons notre expertise à votre service pour tous vos besoins en plomberie. Que ce soit pour des installations neuves, des réparations urgentes ou des projets de rénovation, notre équipe qualifiée est là pour vous offrir des solutions efficaces et durables.</p>
-        <p>Nous intervenons rapidement pour résoudre vos problèmes de plomberie, qu'il s'agisse de fuites, de canalisations bouchées ou de pannes diverses. Notre objectif est de garantir votre confort et votre satisfaction grâce à un service professionnel et personnalisé.</p>
-        <p>Faites confiance à Azur 66 Plomberie pour tous vos travaux de plomberie. Contactez-nous dès aujourd'hui pour un devis gratuit ou pour toute demande d'information. Nous sommes impatients de collaborer avec vous et de répondre à vos besoins en matière de plomberie.</p> 
-    </div> #}
