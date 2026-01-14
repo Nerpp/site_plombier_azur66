@@ -36,10 +36,10 @@
 						<div class="carousel-item {{ loop.first ? 'active' : '' }}">
 							<figure class="mb-0">
 								{% set text = r.text|default('') %}
-								{% set is_long = text|length > 180 %}
+								{% set is_long = text|length > 150 %}
 								{% set has_text = text|length > 0 %}
 								<blockquote class="blockquote mb-2 small">
-									“{{ is_long ? text|slice(0, 180) ~ '…' : text }}”
+									“{{ is_long ? text|slice(0, 150) ~ '…' : text }}”
 								</blockquote>
 
 								<figcaption class="blockquote-footer mb-0">
