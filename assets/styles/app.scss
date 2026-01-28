@@ -1,5 +1,14 @@
 @use "bootstrap/scss/bootstrap";
 
+/* Bootstrap info: fonce légèrement pour améliorer le contraste texte blanc */
+:root {
+  --bs-info: #1b6b9a;
+  --bs-info-rgb: 27, 107, 154;
+  --bs-info-text-emphasis: #07283c;
+  --bs-info-bg-subtle: #cfe7f4;
+  --bs-info-border-subtle: #a8d2eb;
+}
+
 /* Self-hosted Inter (latin + latin-ext) */
 @font-face {
   font-family: "Inter";
@@ -269,6 +278,33 @@ body {
   .svc-carousel { --svc-ctrl-size: 38px; }
   .svc-carousel .carousel-control-prev { left: 6px; }
   .svc-carousel .carousel-control-next { right: 6px; }
+}
+
+/* Fixe l'affichage des commentaires à 4 lignes */
+.review-quote {
+  line-height: 1.5;
+  min-height: calc(1.5em * 3);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Hauteur fixe pour stabiliser la carte des avis */
+.reviews-card__body {
+  min-height: 420px;
+}
+@media (max-width: 575.98px) {
+  .reviews-card__body {
+    min-height: 380px;
+  }
+}
+
+/* Troncature mobile/desktop */
+.review-text--mobile { display: none; }
+@media (max-width: 575.98px) {
+  .review-text--desktop { display: none; }
+  .review-text--mobile { display: inline; }
 }
 
 /* ✅ Image service dans le petit carousel (hauteur responsive) */

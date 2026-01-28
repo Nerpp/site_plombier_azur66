@@ -1,6 +1,6 @@
 {# templates/partials/_reviews_card.html.twig #}
 <aside class="card h-100 shadow-sm reviews-card">
-	<div class="card-body">
+	<div class="card-body reviews-card__body">
 
 
 		<h3 class="card-title supInfo">{{ admin.suppInfo }} <span class="icon"> <img class="icon" src="{{ asset('build/svg/stylo.svg') }}" width="24" height="24" alt="" aria-hidden="true" decoding="async"></span></h3>
@@ -37,9 +37,11 @@
 							<figure class="mb-0">
 								{% set text = r.text|default('') %}
 								{% set is_long = text|length > 150 %}
+								{% set is_long_mobile = text|length > 100 %}
 								{% set has_text = text|length > 0 %}
-								<blockquote class="blockquote mb-2 small">
-									“{{ is_long ? text|slice(0, 150) ~ '…' : text }}”
+								<blockquote class="blockquote mb-2 small review-quote">
+									<span class="review-text review-text--desktop">“{{ is_long ? text|slice(0, 150) ~ '…' : text }}”</span>
+									<span class="review-text review-text--mobile">“{{ is_long_mobile ? text|slice(0, 100) ~ '…' : text }}”</span>
 								</blockquote>
 
 								<figcaption class="blockquote-footer mb-0">
