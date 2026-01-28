@@ -11,11 +11,14 @@
 
         {% if app.user %}
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('app_admin_settings') }}">Admin</a>
+                <a class="nav-link" href="{{ path('app_home') }}">Accueil</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('app_admin_settings') }}">Général</a>
             </li>
             
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('app_admin_commentaire_index') }}">Admin Commentaire</a>
+                <a class="nav-link" href="{{ path('app_admin_commentaire_index') }}">Commentaire</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('app_logout') }}">Déconnection</a>
