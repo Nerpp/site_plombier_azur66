@@ -30,6 +30,7 @@ final class ImageOptimizerService
     'service_sq_800'        => ['mode' => 'square', 'w' => 800,  'h' => 800,  'up' => true],
     // carousels 16:9 (préserve toute l'image, sans découpe)
     'service_car_640x360'   => ['mode' => 'fit',    'w' => 640,  'h' => 360,  'up' => true],  // 🔴 NOUVEAU (mobile)
+    'service_car_960x540'   => ['mode' => 'fit',    'w' => 960,  'h' => 540,  'up' => true],
     'service_car_1280x720'  => ['mode' => 'fit',    'w' => 1280, 'h' => 720,  'up' => true],
     'service_car_1920x1080' => ['mode' => 'fit',    'w' => 1920, 'h' => 1080, 'up' => true],
 ];

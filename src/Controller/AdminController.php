@@ -209,9 +209,11 @@ final class AdminController extends AbstractController
                             slugger: $slugger,
                             imageOptimizer: $imageOptimizer,
                             preset: 'service_car_1280x720',
-                            variantPreset: 'service_car_640x360',
-                            variantSuffix: '640x360',
                             primarySuffix: '1280x720',
+                            variants: [
+                                ['preset' => 'service_car_640x360', 'suffix' => '640x360'],
+                                ['preset' => 'service_car_960x540', 'suffix' => '960x540'],
+                            ],
                             onSaved: function (string $new) use ($photo) { $photo->setSource($new); },
                         );
                     }
@@ -294,6 +296,7 @@ final class AdminController extends AbstractController
         ?string $variantPreset = null,
         ?string $variantSuffix = null,
         ?string $primarySuffix = null,
+        ?array $variants = null,
     ): void {
         $allowed = ['image/jpeg', 'image/png', 'image/webp'];
         $mime = $uploadedFile->getMimeType();
@@ -301,12 +304,31 @@ final class AdminController extends AbstractController
             throw new \RuntimeException('Format non autorisé (serveur).');
         }
 
+        $variantList = [];
+        if ($variantPreset && $variantSuffix) {
+            $variantList[] = ['preset' => $variantPreset, 'suffix' => $variantSuffix];
+        }
+        if (is_array($variants)) {
+            foreach ($variants as $variant) {
+                if (!is_array($variant) || !isset($variant['preset'], $variant['suffix'])) {
+                    throw new \InvalidArgumentException('Variant invalide: attendu [preset, suffix].');
+                }
+                $variantList[] = [
+                    'preset' => (string) $variant['preset'],
+                    'suffix' => (string) $variant['suffix'],
+                ];
+            }
+        }
+        $variantList = array_values(array_unique($variantList, SORT_REGULAR));
+
         if ($currentFilename) {
             @unlink(rtrim($destDir, '/') . '/' . $currentFilename);
-            if ($primarySuffix && $variantSuffix) {
-                $variantFilename = $this->swapImageSuffix($currentFilename, $primarySuffix, $variantSuffix);
-                if ($variantFilename !== $currentFilename) {
-                    @unlink(rtrim($destDir, '/') . '/' . $variantFilename);
+            if ($primarySuffix && $variantList) {
+                foreach ($variantList as $variant) {
+                    $variantFilename = $this->swapImageSuffix($currentFilename, $primarySuffix, $variant['suffix']);
+                    if ($variantFilename !== $currentFilename) {
+                        @unlink(rtrim($destDir, '/') . '/' . $variantFilename);
+                    }
                 }
             }
         }
@@ -340,15 +362,15 @@ final class AdminController extends AbstractController
             throw new \RuntimeException('Erreur lors du traitement de l’image : ' . $e->getMessage());
         }
 
-        if ($variantPreset && $variantSuffix) {
-            $variantFilename = sprintf('%s-%s.%s', $baseName, $variantSuffix, $ext);
+        foreach ($variantList as $variant) {
+            $variantFilename = sprintf('%s-%s.%s', $baseName, $variant['suffix'], $ext);
             $variantPath = rtrim($destDir, '/') . '/' . $variantFilename;
             if (!@copy($fullPath, $variantPath)) {
                 @unlink($fullPath);
                 throw new \RuntimeException('Erreur lors de la duplication de l’image.');
             }
             try {
-                $imageOptimizer->optimizePreset($variantPath, $variantPreset);
+                $imageOptimizer->optimizePreset($variantPath, $variant['preset']);
             } catch (\Throwable $e) {
                 @unlink($variantPath);
                 throw new \RuntimeException('Erreur lors du traitement de la variante : ' . $e->getMessage());

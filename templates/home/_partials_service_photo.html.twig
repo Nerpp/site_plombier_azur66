@@ -35,7 +35,7 @@
               {% else %}
 
                 <div class="no-zoom-zone">
-                  <div id="{{ cid }}" class="carousel slide" data-bs-ride="false">
+                  <div id="{{ cid }}" class="carousel slide svc-carousel" data-bs-ride="false">
                     <div class="carousel-inner service-lightbox-trigger" role="button" tabindex="0" aria-label="Ouvrir la galerie en grand">
 
                       {% for p in photos %}
@@ -43,16 +43,19 @@
                         {% set desc = attribute(p, 'description') is defined ? p.description : (attribute(p, 'getDescription') is defined ? p.getDescription() : '') %}
                         {% set full = asset(servicesBase ~ '/' ~ src) %}
                         {% set smallSrc = src %}
+                        {% set midSrc = src %}
                         {% if '-1280x720.' in src %}
                           {% set smallSrc = src|replace({'-1280x720.': '-640x360.'}) %}
+                          {% set midSrc = src|replace({'-1280x720.': '-960x540.'}) %}
                         {% endif %}
                         {% set small = asset(servicesBase ~ '/' ~ smallSrc) %}
+                        {% set mid = asset(servicesBase ~ '/' ~ midSrc) %}
 
                         <div class="carousel-item {{ loop.first ? 'active' : '' }}">
                           {# ✅ PAS de <a href="...image"> sinon mobile ouvre l'image brute #}
                           <img
                             src="{{ small }}"
-                            srcset="{{ small }} 640w, {{ full }} 1280w"
+                            srcset="{{ small }} 640w, {{ mid }} 960w, {{ full }} 1280w"
                             sizes="(min-width: 992px) 33vw, (min-width: 768px) 50vw, 100vw"
                             data-full="{{ full }}"
                             class="d-block w-100"
@@ -101,7 +104,7 @@
       </div>
 
       <div class="modal-body p-0">
-        <div id="lightboxCarousel" class="carousel slide" data-bs-interval="false">
+        <div id="lightboxCarousel" class="carousel slide svc-carousel svc-carousel--modal" data-bs-interval="false">
           <div class="carousel-indicators"></div>
           <div class="carousel-inner"></div>
 

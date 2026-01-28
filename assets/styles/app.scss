@@ -190,6 +190,53 @@ body {
   -webkit-touch-callout: none;
 }
 
+/* Service carousel controls */
+.svc-carousel {
+  --svc-ctrl-size: 44px;
+  --svc-ctrl-bg: linear-gradient(135deg, #0b3350 0%, #1f6fa3 100%);
+  --svc-ctrl-ring: rgba(255, 255, 255, 0.75);
+}
+.svc-carousel .carousel-control-prev,
+.svc-carousel .carousel-control-next {
+  width: var(--svc-ctrl-size);
+  height: var(--svc-ctrl-size);
+  top: 50%;
+  bottom: auto;
+  opacity: 1;
+  transform: translateY(-50%);
+  border-radius: 999px;
+  background: var(--svc-ctrl-bg);
+  border: 2px solid var(--svc-ctrl-ring);
+  box-shadow: 0 8px 18px rgba(8, 24, 38, 0.25);
+}
+.svc-carousel .carousel-control-prev { left: 12px; }
+.svc-carousel .carousel-control-next { right: 12px; }
+.svc-carousel .carousel-control-prev-icon,
+.svc-carousel .carousel-control-next-icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  background-size: 100% 100%;
+  filter: brightness(0) invert(1);
+}
+.svc-carousel .carousel-control-prev:hover,
+.svc-carousel .carousel-control-next:hover {
+  transform: translateY(-50%) scale(1.04);
+  box-shadow: 0 10px 22px rgba(8, 24, 38, 0.35);
+}
+.svc-carousel .carousel-control-prev:focus-visible,
+.svc-carousel .carousel-control-next:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(31, 111, 163, 0.35);
+}
+.svc-carousel--modal {
+  --svc-ctrl-size: 52px;
+}
+@media (max-width: 575.98px) {
+  .svc-carousel { --svc-ctrl-size: 38px; }
+  .svc-carousel .carousel-control-prev { left: 6px; }
+  .svc-carousel .carousel-control-next { right: 6px; }
+}
+
 /* ✅ Image service dans le petit carousel (hauteur responsive) */
 .svc-img{
   width: 100%;
