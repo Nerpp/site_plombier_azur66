@@ -158,7 +158,7 @@ final class AdminController extends AbstractController
                     destDir: $uploadDirLogo,
                     slugger: $slugger,
                     imageOptimizer: $imageOptimizer,
-                    preset: 'avatar_128',
+                    preset: 'logo_max_320',
                     onSaved: function (string $new) use ($admin) { $admin->setSrcLogo($new); },
                 );
             }
